@@ -139,7 +139,7 @@ contract FlightSuretyApp {
     *
     */
     function fundAirline() public payable {
-        flightSuretyData.fundAirline(msg.sender, msg.value);
+        flightSuretyData.fundAirline.value(msg.value)(msg.sender);
     }
 
    /**
@@ -160,6 +160,32 @@ contract FlightSuretyApp {
 
     function getFlightCount() external view returns(uint) {
         return flightSuretyData.getFlightCount();
+    }
+
+     function getFlightDetails(bytes32 _flightHash) public view returns(string memory,
+     string memory, string memory, bool, bool, uint8, uint256, address) {
+        return flightSuretyData.getFlight(_flightHash);
+    }
+
+    function insureFlight(string calldata _flightCode, uint256 _departureDate) external {
+        flightSuretyData.insureFlight(_flightCode, _departureDate);
+    }
+
+    function isInsured(address _airlineAddress, address _passengerAddress,
+    string memory _flightCode, uint departureDate) public view returns(bool) {
+        return flightSuretyData.isInsured(_airlineAddress, _passengerAddress, _flightCode, departureDate);
+    }
+
+    function buyInsurance(address _airlineAddress, uint departureDate, string memory flightCode) public payable {
+        flightSuretyData.buy.value(msg.value)(_airlineAddress, departureDate, flightCode);
+    }
+
+    function getInsuranceBalance(address _passengerAddress, bytes32 _flightHash) external view returns(uint) {
+        return flightSuretyData.getInsuranceBalance(_passengerAddress, _flightHash);
+    }
+
+    function payOut(bytes32 _flightHash, uint amount) public payable {
+        flightSuretyData.pay(_flightHash, amount);
     }
 
    /**
@@ -324,7 +350,7 @@ contract FlightSuretyApp {
                             uint256 timestamp
                         )
                         pure
-                        internal
+                        public
                         returns(bytes32)
     {
         return keccak256(abi.encodePacked(airline, flight, timestamp));
