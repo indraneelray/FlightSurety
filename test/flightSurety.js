@@ -183,24 +183,24 @@ contract('Flight Surety Tests', async (accounts) => {
     let numAirlines = await config.flightSuretyApp.AirlineCount.call();
     // there are 5 airlines in the list
     assert.equal(Number(numAirlines), 5);
-    // let airline5details = await config.flightSuretyApp.getAirlineDetails.call(fifthAirline);
+    let airline5details = await config.flightSuretyApp.getAirlineDetails.call(fifthAirline);
 
-    // await config.flightSuretyApp.castVote(fifthAirline, {from:owner});
-    // airline5details = await config.flightSuretyApp.getAirlineDetails.call(fifthAirline);
-    // assert.equal(fifthAirline[2], false);
-    // let numVotes = await config.flightSuretyApp.numVotesCasted.call(fifthAirline);
-    // assert.equal(numVotes, 1)
-    // await config.flightSuretyApp.castVote(fifthAirline, {from:secondAirline});
-    // airline5details = await config.flightSuretyApp.getAirlineDetails.call(fifthAirline);
-    // assert.equal(airline5details[2], false);
-    // numVotes = await config.flightSuretyApp.numVotesCasted.call(fifthAirline);
-    // assert.equal(numVotes, 2)
-    // await config.flightSuretyApp.castVote(fifthAirline, {from:thirdAirline});
-    // airline5details = await config.flightSuretyApp.getAirlineDetails(fifthAirline);
-    // // after 3 out of 4 votes the 5th airline gets registered
-    // assert.equal(airline5details[2], true);
-    // numVotes = await config.flightSuretyApp.numVotesCasted.call(fifthAirline);
-    // assert.equal(numVotes, 3)
+    await config.flightSuretyApp.castVote(fifthAirline, {from:owner});
+    airline5details = await config.flightSuretyApp.getAirlineDetails.call(fifthAirline);
+    assert.equal(fifthAirline[2], false);
+    let numVotes = await config.flightSuretyApp.numVotesCasted.call(fifthAirline);
+    assert.equal(numVotes, 1)
+    await config.flightSuretyApp.castVote(fifthAirline, {from:secondAirline});
+    airline5details = await config.flightSuretyApp.getAirlineDetails.call(fifthAirline);
+    assert.equal(airline5details[2], false);
+    numVotes = await config.flightSuretyApp.numVotesCasted.call(fifthAirline);
+    assert.equal(numVotes, 2)
+    await config.flightSuretyApp.castVote(fifthAirline, {from:thirdAirline});
+    airline5details = await config.flightSuretyApp.getAirlineDetails(fifthAirline);
+    // after 3 out of 4 votes the 5th airline gets registered
+    assert.equal(airline5details[2], true);
+    numVotes = await config.flightSuretyApp.numVotesCasted.call(fifthAirline);
+    assert.equal(numVotes, 3)
 });
 
 
