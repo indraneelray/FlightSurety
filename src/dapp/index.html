@@ -13,18 +13,121 @@
 
     <nav class="navbar navbar-expand-md navbar-dark bg-dark fixed-top">
         <a class="navbar-brand" href="#">FlightSurety</a>
+        <!-- data-toggle="collapse" -->
         <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarsExampleDefault" aria-controls="navbarsExampleDefault"
             aria-expanded="false" aria-label="Toggle navigation">
             <span class="navbar-toggler-icon"></span>
         </button>
     </nav>
-
     <main class="container">
+        <div id="contractOwner" class="ownerInfo">
+            <h2>Contract owner:</h2>
+        </div>
+        <div>
 
+    </main>
+    <main class="container">
         <div id="display-wrapper" class="top-20">
         </div>
+    </main>
+
+    <main class="container">
+        <div class="userInfoBox">
+            <div class="form-group">
+                <label for="selAddress">Select sender address:</label>
+                <select id="selAddress" class="form-control">
+                </select>
+            </div>
+            <h2>Current airline address:</h2>
+            <p id="currentAddress"></p>
+        </div>
+    </main>
+    <main class="container">
+        <div>
+            <h2>Airline functions:</h2>
+            <div id="regAirlineFunc">
+                <label for ="airlineReg-address">Airline (address)</label>
+                <select id="airlineReg-address">
+                </select>
+                <input type="text" id="airlineName">
+                <btn class="btn btn-primary" id="register-airline">Register airline</btn>
+            </div>
+            <div id="fundAirlineFunc">
+                <label for ="airlineFund-address">Airline (address)</label>
+                <select id="airlineFund-address">
+                </select>
+                <btn class="btn btn-primary" id="fund-airline">Fund airline</btn>
+            </div>
+            <div>
+                <btn class="btn btn-primary" id="show-airlines">Show airlines</btn>
+                <div id="showRegisteredAirlines">
+                </div>
+            </div>
+            <div id="regFlightForm">
+                <h5><em>Register flight:</em></h5>
+                <label for="flightDepartureDay">Flight Date:</label>
+                <input type="date" id="flightDepartureDay" name="departDate">
+                <label for="flightHour">Hour:</label>
+                <select id="flightHour">
+                </select>
+                <label for="flightMinute">Minute:</label>
+                <select id="flightMinute">
+                </select>
+                <div id="flightDetails">
+                    <label for="flightCode">Flight code:</label>
+                    <input type="text" id="flightCode">
+                    <label for="flightOrigin">Origin:</label>
+                    <select id="flightOrigin">
+                    </select>
+                    <span id="originCode"></span>
+                    <label for="flightOrigin">Destination:</label>
+                    <select id="flightDestination">
+                    </select>
+                    <span id="destinationCode"></span>
+                </div>
+
+                <btn class="btn btn-primary" id="reg-flight">Register flight</btn>
+            </div>
+        </div>
+    </main>
+    <main class="container">
+        <div class="passengerInfoBox">
+            <div class="form-group">
+                <label for="selPassengerAddress">Select passenger address:</label>
+                <select id="selPassengerAddress" class="form-control">
+                </select>
+            </div>
+            <h2>Current passenger address:</h2>
+            <p id="currentPassengerAddress"></p>
+            <div>
+                <label for="premiumVal">Insurance premium: (0 ether < value <= 1 ether)</label>
+                <input type="text" id="premiumVal">
+            </div>
+        </div>
+
+        <div>
+            <btn class="btn btn-primary" id="show-flights">Show flights</btn>
+            <div id="showRegisteredFlights">
+            </div>
+        </div>
+
+        <div>
+            <h2>Passenger insured flights</h2>
+            <btn class="btn btn-primary" id="showInsuredFlights">Show insured flights</btn>
+            <div id="insuredFlightsBox">
+            </div>
+        </div>
+    </main>
+    
+    <main class="container">
+        <!-- <div id="airlines-list">
+        </div> -->
         <div class="row top-20">
-            <label class="form">Flight</label> <input type="text" id="flight-number"> <btn class="btn btn-primary" id="submit-oracle">Submit to Oracles</btn>
+            <h2>Get flight status:</h2>
+            <div>
+                <label class="form">Flight</label> <input type="text" id="flight-number"> <btn class="btn btn-primary" id="submit-oracle">Submit to Oracles</btn>
+            </div>
+
         </div>
     </main>
 

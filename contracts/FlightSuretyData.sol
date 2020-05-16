@@ -135,6 +135,17 @@ contract FlightSuretyData {
         return airlines[userAddress].isFunded;
     }
 
+    function getAirlineByIndex(uint airlineNum) external view returns(address, string memory, bool, bool, address[] memory) {
+        Airline memory airline = airlinesList[airlineNum];
+        return (airline.airlineAddress, airline.name, airline.isRegistered, airline.isFunded, airline.voters);
+    }
+
+    function getFlightByIndex(uint flightNum) external view returns(string memory, string memory, string memory,
+     bool, bool, uint8, uint256, address, address[] memory) {
+        Flight memory flight = flightsList[flightNum];
+        return (flight.code, flight.from, flight.to, flight.isRegistered, flight.isInsured, flight.statusCode, flight.departureDate, flight.airline, flight.insuredPassengers);
+    }
+
     /**
     * @dev Sets contract operations on/off
     *
@@ -175,6 +186,14 @@ contract FlightSuretyData {
     // get the current insurance fund balance
     function getContractBalance() external requireIsOperational view returns(uint) {
         return address(this).balance;
+    }
+
+    function getInsuredKeysLength(address _passengerAddress) external view returns(uint256) {
+        return insuredFlights[_passengerAddress].length;
+    }
+
+    function getInsuredFlights(address _passengerAddress, uint _index) external view returns(bytes32) {
+        return insuredFlights[_passengerAddress][_index];
     }
 
 
@@ -334,11 +353,16 @@ contract FlightSuretyData {
         return flightsList.length;
     }
 
-     function getFlight(bytes32 _flightHash) external view returns(string memory,
+    function getFlight(bytes32 _flightHash) external view returns(string memory,
       string memory, string memory, bool, bool, uint8, uint256, address) {
         Flight memory flight = flights[_flightHash];
         return (flight.code, flight.from, flight.to,
         flight.isRegistered, flight.isInsured, flight.statusCode, flight.departureDate, flight.airline);
+    }
+
+    function getFlightCode(bytes32 _flightHash) external view returns(uint8 ) {
+        Flight memory flight = flights[_flightHash];
+        return flight.statusCode;
     }
 
     function insureFlight(string calldata _flightCode, uint256 _departureDate) external requireAirline requireAirlineFunding

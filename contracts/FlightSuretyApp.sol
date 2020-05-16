@@ -113,6 +113,11 @@ contract FlightSuretyApp {
          return flightSuretyData.AirlineCount();
     }
 
+    function getAirlineByIndex(uint airlineNum) external view returns(address, string memory,
+    bool, bool, address[] memory) {
+        return flightSuretyData.getAirlineByIndex(airlineNum);
+    }
+
     function getAirlineDetails(address _airlineAddress) external view returns(address, string memory, bool, bool, address[] memory) {
         return flightSuretyData.getAirline(_airlineAddress);
     }
@@ -171,6 +176,11 @@ contract FlightSuretyApp {
         flightSuretyData.insureFlight(_flightCode, _departureDate);
     }
 
+     function getFlightByIndex(uint _flightNum) external view returns(string memory, string memory, string memory,
+     bool, bool, uint8, uint256, address, address[] memory) {
+         return flightSuretyData.getFlightByIndex(_flightNum);
+     }
+
     function isInsured(address _airlineAddress, address _passengerAddress,
     string memory _flightCode, uint departureDate) public view returns(bool) {
         return flightSuretyData.isInsured(_airlineAddress, _passengerAddress, _flightCode, departureDate);
@@ -184,9 +194,22 @@ contract FlightSuretyApp {
         return flightSuretyData.getInsuranceBalance(_passengerAddress, _flightHash);
     }
 
-    function payOut(bytes32 _flightHash, uint amount) public payable {
+    function getInsuredFlights(address _passengerAddress, uint _index) external view returns(bytes32) {
+        return flightSuretyData.getInsuredFlights(_passengerAddress, _index);
+    }
+
+
+    function getInsuredKeysLength(address _passengerAddress) external view returns(uint256) {
+        return flightSuretyData.getInsuredKeysLength(_passengerAddress);
+    }
+
+    function payOut(bytes32 _flightHash, uint amount) public payable returns(uint8){
+        uint8 statusCode = flightSuretyData.getFlightCode(_flightHash);
+        require(statusCode == STATUS_CODE_LATE_AIRLINE, "Flight was not delayed");
         flightSuretyData.pay(_flightHash, amount);
     }
+
+
 
    /**
     * @dev Called after oracle has updated flight status
@@ -305,7 +328,9 @@ contract FlightSuretyApp {
         return oracles[msg.sender].indexes;
     }
 
-
+    function getOracleInfo(address _oracleAddress) public view requireContractOwner returns(bool, uint8[3] memory) {
+        return (oracles[_oracleAddress].isRegistered, oracles[_oracleAddress].indexes);
+    }
 
 
     // Called by oracle when a response is available to an outstanding request
