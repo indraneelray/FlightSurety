@@ -131,8 +131,13 @@ contract FlightSuretyApp {
     * @dev Cast vote
     *
     */
-    function castVote(address _airlineAddress) public {
-        flightSuretyData.castVote(_airlineAddress);
+    function castVote(address _airlineAddress) public  {
+        flightSuretyData.AddVote(_airlineAddress);
+        uint totalVotes = flightSuretyData.numVotesCasted(_airlineAddress);
+        if (totalVotes > (flightSuretyData.AirlineCount().div(2))) {
+            flightSuretyData.updateAirlineRegistration(_airlineAddress);
+        }
+
     }
 
     function numVotesCasted(address _airlineAddress) external view returns(uint) {

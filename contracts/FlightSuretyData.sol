@@ -61,6 +61,10 @@ contract FlightSuretyData {
                                 public
     {
         contractOwner = msg.sender;
+        // Authorizing yourself to call own functions, that can be called
+        // externally and hence require authorization
+        authorizedCallers[address(this)] = true;
+        authorizedCallers[contractOwner] = true;
     }
 
     /********************************************************************************************/
@@ -87,6 +91,12 @@ contract FlightSuretyData {
     modifier requireContractOwner()
     {
         require(msg.sender == contractOwner, "Caller is not contract owner");
+        _;
+    }
+
+    modifier verifyCallerIsAuthorized()
+    {
+        require(authorizedCallers[msg.sender] == true, "The caller is not authorized to call this operation");
         _;
     }
 
@@ -236,20 +246,22 @@ contract FlightSuretyData {
             airlinesList.push(airlines[airlineAddress]);
     }
 
-    function castVote(address _airlineAddress) public requireAirline requireAirlineFunding requireIsOperational {
+    function AddVote(address _airlineAddress) public requireAirline requireAirlineFunding requireIsOperational verifyCallerIsAuthorized{
         // check if the airline has already voted
         require(!alreadyVoted(tx.origin, _airlineAddress), "This airline has already voted");
         // check if the airline that is being voted on is not registered yet
         require(!airlines[_airlineAddress].isRegistered, "This airline has not registered yet to be able to vote");
         Airline storage airlineToUpdate = airlines[_airlineAddress];
         airlineToUpdate.voters.push(tx.origin);
-        if (airlineToUpdate.voters.length > (number_of_airlines.div(2))) {
-            airlineToUpdate.isRegistered = true;
-        }
     }
 
     function numVotesCasted(address _airlineAddress) external view returns(uint) {
         return airlines[_airlineAddress].voters.length;
+    }
+
+    function updateAirlineRegistration(address _airlineAddress) public requireAirline
+    requireAirlineFunding requireIsOperational verifyCallerIsAuthorized{
+        airlines[_airlineAddress].isRegistered = true;
     }
 
     function alreadyVoted(address _voter, address _airlineAddress) public view returns(bool) {
