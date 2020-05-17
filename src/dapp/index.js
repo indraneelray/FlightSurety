@@ -589,7 +589,7 @@ import {flightCodes} from "./flightData.js";
                 flight: DOM.elid("submit-oracle-flight-code").value,
                 departureDate: new Date(DOM.elid("submit-oracle-departure-day").value +
                  "T" + DOM.elid("submit-oracle-departure-hour").value +
-                  ":" + DOM.elid("submit-oracle-departure-min").value + ":00Z").valueOf()/1000,
+                  ":" + DOM.elid("submit-oracle-departure-min").value + ":00Z").valueOf(),
             };
             let err, result;
             try {
@@ -601,7 +601,7 @@ import {flightCodes} from "./flightData.js";
                 display('Flight Status',
                     'Send the request to Oracle server to get the flight status code for this flight',
                     [
-                       
+                       { label: 'Flight Status Code', error: err, value: result}
                         ]
                 );
 
