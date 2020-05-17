@@ -169,8 +169,38 @@ import {flightCodes} from "./flightData.js";
 
         // fill in the hour and minute selectors - register flight functionality
         (async() => {
+            let hourElem2 = document.getElementById("submit-oracle-departure-hour");
+            let minuteElem2 = document.getElementById("submit-oracle-departure-min");
+
+            for (let c = 0; c < 24; c++) {
+                let newOption = document.createElement("option");
+                if (c < 10) {
+                    newOption.setAttribute("value", `0${c}`);
+                    newOption.innerHTML = `0${c}`;
+                } else {
+                    newOption.setAttribute("value", c);
+                    newOption.innerHTML = c;
+                }
+                hourElem2.appendChild(newOption);
+            }
+            for (let c = 0; c < 60; c++) {
+                let newOption = document.createElement("option");
+                if (c < 10) {
+                    newOption.setAttribute("value", `0${c}`);
+                    newOption.innerHTML = `0${c}`;
+                } else {
+                    newOption.setAttribute("value", c);
+                    newOption.innerHTML = c;
+                }
+                minuteElem2.appendChild(newOption);
+            }
+        })();
+
+        // fill in the hour and minute selectors - register flight functionality
+        (async() => {
             let hourElem = document.getElementById("flightHour");
             let minuteElem = document.getElementById("flightMinute");
+
             for (let c = 0; c < 24; c++) {
                 let newOption = document.createElement("option");
                 if (c < 10) {
@@ -194,6 +224,7 @@ import {flightCodes} from "./flightData.js";
                 minuteElem.appendChild(newOption);
             }
         })();
+        
 
         // end: adding select options
 
@@ -215,7 +246,7 @@ import {flightCodes} from "./flightData.js";
                 let departureDate = new Date(flightDeptDay + "T" + flightDeptHour + ":" + flightDeptMinute + ":00Z");
                 //console.log(flightDeptDay + "T" + flightDeptHour + ":" + flightDeptMinute + ":00Z");
                 departureDate = departureDate.getTime();
-                //console.log(departureDate);
+                console.log(departureDate);
                 console.log(airlineAddress, " Airline address");
                 console.log(flightCode, " flight code");
                 console.log(flightOrigin, " origin");
@@ -368,7 +399,7 @@ import {flightCodes} from "./flightData.js";
                 let tabledata6 = document.createElement("td");
                 let tabledata8 = document.createElement("td");
                 let tabledata9 = document.createElement("td");
-                console.log(flightInfo[5]);
+                console.log(flightInfo[4]);
                 if (flightInfo[4]) {
                     tabledata6.innerHTML = "Insured";
                     let fetchStatusBtn = document.createElement("button");
@@ -552,13 +583,29 @@ import {flightCodes} from "./flightData.js";
         })();
 
         // User-submitted transaction
-        DOM.elid('submit-oracle').addEventListener('click', () => {
-            let flight = DOM.elid('flight-number').value;
-            //console.log(flight);
-            // Write transaction
-            contract.getFlightStatus(flight, (error, result) => {
-                display('Oracles', 'Trigger oracles', [ { label: 'Fetch Flight Status', error: error, value: result.flight + ' ' + result.timestamp} ]);
-            });
+        DOM.elid("submit-oracle").addEventListener("click", async () => {
+            let request = {
+                airline: DOM.elid("submit-oracle-airline-address").value,
+                flight: DOM.elid("submit-oracle-flight-code").value,
+                departureDate: new Date(DOM.elid("submit-oracle-departure-day").value +
+                 "T" + DOM.elid("submit-oracle-departure-hour").value +
+                  ":" + DOM.elid("submit-oracle-departure-min").value + ":00Z").valueOf()/1000,
+            };
+            let err, result;
+            try {
+                result = await contract.fetchFlightStatus(request);
+            } catch (e) {
+                console.log(e);
+                err = e;
+            } finally {
+                display('Flight Status',
+                    'Send the request to Oracle server to get the flight status code for this flight',
+                    [
+                       
+                        ]
+                );
+
+            }
         });
 
     });

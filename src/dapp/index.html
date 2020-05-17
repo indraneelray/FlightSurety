@@ -117,19 +117,33 @@
             <div id="insuredFlightsBox">
             </div>
         </div>
+
+        <h3>Refresh Flight Status</h3>
+    <form>
+        <div class="form-group">
+            <label class="form">Airline Address</label>
+            <input type="text" class = "form-control" id="submit-oracle-airline-address">
+        </div>
+        <div class="form-group">
+            <label class="form">Flight Code</label>
+            <input type="text" class = "form-control" id="submit-oracle-flight-code">
+        </div>
+        <div class="form-group">
+            <label for="flightDepartureDay">Flight Date:</label>
+            <input type="date" id="submit-oracle-departure-day" name="departDate">
+            <label for="submit-oracle-departure-hour">Hour:</label>
+            <select id="submit-oracle-departure-hour"></select>
+            <label for="submit-oracle-departure-min">Minute:</label>
+            <select id="submit-oracle-departure-min">
+        </div>
+        <div class="form-group">
+            <input type="button" class="btn btn-primary" id="submit-oracle" value="Refresh">
+        </div>
+    </form>
+    
     </main>
     
-    <main class="container">
-        <!-- <div id="airlines-list">
-        </div> -->
-        <div class="row top-20">
-            <h2>Get flight status:</h2>
-            <div>
-                <label class="form">Flight</label> <input type="text" id="flight-number"> <btn class="btn btn-primary" id="submit-oracle">Submit to Oracles</btn>
-            </div>
-
-        </div>
-    </main>
+    
 
 </body>
 

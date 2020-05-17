@@ -33,7 +33,6 @@ var statusList = [0, 10, 20, 30, 40, 50];
         }
     }
 
-
     flightSuretyApp.events.OracleRequest({
         fromBlock: 0
     }, async function (error, event) {

@@ -193,5 +193,10 @@ export default class Contract {
             .call();
     }
 
+    async fetchFlightStatus(request) {
+            let self = this;
+            return await self.flightSuretyApp.methods
+                .fetchFlightStatus(request.airline, request.flight, request.departureDate);
+    }
     
 }
